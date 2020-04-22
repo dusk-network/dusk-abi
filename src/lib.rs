@@ -35,6 +35,8 @@ mod external {
     extern "C" {
         pub fn balance(buffer: &mut u8);
 
+        pub fn opcode(buffer: &mut u8);
+
         pub fn set_storage(key: &u8, key_len: i32, value: &u8, value_len: i32);
         // `get_storage` returns the length of the value
         // 0 is equivalent to no value
@@ -139,6 +141,16 @@ pub fn self_hash() -> H256 {
 pub fn balance() -> u128 {
     let mut result = u128::zeroed();
     unsafe { external::balance(result.as_byte_ptr_mut()) }
+    result
+}
+
+/// Returns the currently executing contract opcode
+pub fn opcode<O>() -> O
+where
+    O: Pod + Default,
+{
+    let mut result = O::default();
+    unsafe { external::opcode(result.as_byte_ptr_mut()) }
     result
 }
 
