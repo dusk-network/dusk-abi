@@ -64,6 +64,15 @@ mod external {
             ret: &mut u8,
             ret_len: i32,
         );
+        pub fn call_contract_operation(
+            target: &u8,
+            opcode: u8,
+            amount: &u8,
+            argument: &u8,
+            argument_len: i32,
+            ret: &mut u8,
+            ret_len: i32,
+        );
         pub fn ret(data: &u8, len: i32) -> !;
         pub fn bls_verify(
             pub_key: &[u8; 32],
@@ -180,14 +189,40 @@ pub fn bls_verify(
 
 /// Call another contract at address `target`
 pub fn call_contract<A: Pod, R: Pod + core::fmt::Display>(
-    target: &H256,
+    // TODO: Investigate about use again H256
+    target: &[u8],
     amount: u128,
     argument: A,
 ) -> R {
     let mut result = R::zeroed();
     unsafe {
         external::call_contract(
-            target.as_byte_ptr(),
+            // TODO: Investigate about use again H256 and `target.as_byte_ptr()`
+            &target[0],
+            amount.as_byte_ptr(),
+            argument.as_byte_ptr(),
+            mem::size_of::<A>() as i32,
+            result.as_byte_ptr_mut(),
+            mem::size_of::<R>() as i32,
+        )
+    }
+    result
+}
+
+/// Call another contract's operation at address `target`
+pub fn call_contract_operation<A: Pod, R: Pod + core::fmt::Display>(
+    // TODO: Investigate about use again H256
+    target: &[u8],
+    opcode: u8,
+    amount: u128,
+    argument: A,
+) -> R {
+    let mut result = R::zeroed();
+    unsafe {
+        external::call_contract_operation(
+            // TODO: Investigate about use again H256 and `target.as_byte_ptr()`
+            &target[0],
+            opcode,
             amount.as_byte_ptr(),
             argument.as_byte_ptr(),
             mem::size_of::<A>() as i32,
