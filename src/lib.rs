@@ -189,16 +189,15 @@ pub fn bls_verify(
 
 /// Call another contract at address `target`
 pub fn call_contract<A: Pod, R: Pod + core::fmt::Display>(
-    // TODO: Investigate about use again H256
-    target: &[u8],
+    // TODO: Investigate how to reduce the wasm size after using H256
+    target: &H256,
     amount: u128,
     argument: A,
 ) -> R {
     let mut result = R::zeroed();
     unsafe {
         external::call_contract(
-            // TODO: Investigate about use again H256 and `target.as_byte_ptr()`
-            &target[0],
+            target.as_byte_ptr(),
             amount.as_byte_ptr(),
             argument.as_byte_ptr(),
             mem::size_of::<A>() as i32,
@@ -211,8 +210,8 @@ pub fn call_contract<A: Pod, R: Pod + core::fmt::Display>(
 
 /// Call another contract's operation at address `target`
 pub fn call_contract_operation<A: Pod, R: Pod + core::fmt::Display>(
-    // TODO: Investigate about use again H256
-    target: &[u8],
+    // TODO: Investigate how to reduce the wasm size after using H256
+    target: &H256,
     opcode: u8,
     amount: u128,
     argument: A,
@@ -220,8 +219,7 @@ pub fn call_contract_operation<A: Pod, R: Pod + core::fmt::Display>(
     let mut result = R::zeroed();
     unsafe {
         external::call_contract_operation(
-            // TODO: Investigate about use again H256 and `target.as_byte_ptr()`
-            &target[0],
+            target.as_byte_ptr(),
             opcode,
             amount.as_byte_ptr(),
             argument.as_byte_ptr(),
