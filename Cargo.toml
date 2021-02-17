@@ -5,9 +5,7 @@ authors = ["Kristoffer Ström <kristoffer@dusk.network>"]
 edition = "2018"
 
 repository = "https://github.com/dusk-network/dusk-abi"
-keywords = ["cryptography", "crypto", "pki", "bls12-381"]
-categories =["cryptography", "cryptography::cryptocurrencies", "no-std", "wasm"]
-description = "A library that holds the types and functions required to perform keys operations in Dusk"
+description = "The official ABI to develop dusk-network contracts and host module for Rusk VM"
 license = "MPL-2.0"
 exclude = [".github/workflows/ci.yml", ".gitignore"]
 
