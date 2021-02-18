@@ -25,6 +25,23 @@ pub use types::transaction::Transaction;
 #[doc(hidden)]
 mod canon_to_vec;
 
+/// The trait that host modules uses to defines their own ID for both host and
+/// hosted environment
+pub trait Module {
+    /// Returns the id that identifies this module
+    fn id() -> ContractId
+    where
+        Self: Sized;
+
+    /// Returns the module's id from the object instance
+    fn module_id(&self) -> ContractId
+    where
+        Self: Sized,
+    {
+        Self::id()
+    }
+}
+
 cfg_if::cfg_if! {
     if #[cfg(target_arch = "wasm32")] {
         // re-export WeeAlloc
