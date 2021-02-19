@@ -4,11 +4,11 @@
 //
 // Copyright (c) DUSK NETWORK. All rights reserved.
 
-use crate::{Query, ReturnValue};
+use crate::{Module, Query, ReturnValue};
 use canonical::Store;
 
 /// The trait that host function modules use to communicate with the VM
-pub trait HostModule<S>
+pub trait HostModule<S>: Module
 where
     S: Store,
 {
