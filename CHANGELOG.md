@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1] - 2021-02-25
+
+### Changed
+
+- Closes #16 - Increase buffer limit for WASM transactions
+
 ## [0.5.0] - 2021-02-18
 
 ### Added
