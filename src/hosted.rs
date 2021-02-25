@@ -4,7 +4,7 @@
 //
 // Copyright (c) DUSK NETWORK. All rights reserved.
 
-const BUFFER_SIZE_LIMIT: usize = 1024;
+const BUFFER_SIZE_LIMIT: usize = 1024 * 2;
 
 use canonical::{BridgeStore, ByteSink, ByteSource, Canon, Id32, Store};
 

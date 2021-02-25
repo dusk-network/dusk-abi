@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1] - 2021-02-25
+
+### Changed
+
+- Change buffer limit from 1KB to 2KB for WASM transaction
+
 ## [0.5.0] - 2021-02-18
 
 ### Added
@@ -131,7 +137,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Basic transaction framework
 
-[unreleased]: https://github.com/dusk-network/dusk-abi/compare/v0.5.0...HEAD
+[unreleased]: https://github.com/dusk-network/dusk-abi/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/dusk-network/dusk-abi/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/dusk-network/dusk-abi/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/dusk-network/dusk-abi/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/dusk-network/dusk-abi/compare/v0.2.0...v0.3.0
