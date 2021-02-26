@@ -102,7 +102,7 @@ where
 pub fn transact_raw(
     target: &ContractId,
     transaction: &Transaction,
-) -> Result<ReturnValue, <BridgeStore<Id32> as Store>::Error> {
+) -> Result<(ContractState, ReturnValue), <BridgeStore<Id32> as Store>::Error> {
     let bs = BridgeStore::<Id32>::default();
 
     let mut buf = [0u8; BUFFER_SIZE_LIMIT];
@@ -115,24 +115,32 @@ pub fn transact_raw(
     // read return back
     let mut source = ByteSource::new(&buf, &bs);
 
-    ReturnValue::read(&mut source)
+    Ok((
+        ContractState::read(&mut source)?,
+        ReturnValue::read(&mut source)?,
+    ))
 }
 
 /// Call another contract at address `target`
 ///
 /// Note that you will have to specify the expected return and argument types
 /// yourself.
-pub fn transact<A, R>(
+pub fn transact<A, R, Slf>(
+    slf: &mut Slf,
     target: &ContractId,
     transaction: &A,
 ) -> Result<R, <BridgeStore<Id32> as Store>::Error>
 where
     A: Canon<BridgeStore<Id32>>,
     R: Canon<BridgeStore<Id32>>,
+    Slf: Canon<BridgeStore<Id32>>,
 {
     let bs = BridgeStore::<Id32>::default();
     let wrapped = Transaction::from_canon(transaction, &bs)?;
-    let result = transact_raw(&target, &wrapped)?;
+    let (state, result) = transact_raw(&target, &wrapped)?;
+
+    *slf = state.cast(bs)?;
+
     result.cast(bs)
 }
 
