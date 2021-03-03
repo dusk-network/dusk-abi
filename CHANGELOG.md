@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Replace `BridgeStore<Id32>` with generic `S` in `transact` [#19]
+
 ## [0.6.0] - 2021-03-01
 
 ### Added
@@ -148,6 +150,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Basic transaction framework
 
+[#19]: https://github.com/dusk-network/dusk-abi/issues/19
 [unreleased]: https://github.com/dusk-network/dusk-abi/compare/v0.6.0...HEAD
 [0.6.0]: https://github.com/dusk-network/dusk-abi/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/dusk-network/dusk-abi/compare/v0.5.0...v0.5.1

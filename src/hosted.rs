@@ -125,21 +125,22 @@ pub fn transact_raw(
 ///
 /// Note that you will have to specify the expected return and argument types
 /// yourself.
-pub fn transact<A, R, Slf>(
+pub fn transact<S, A, R, Slf>(
     slf: &mut Slf,
     target: &ContractId,
     transaction: &A,
-) -> Result<R, <BridgeStore<Id32> as Store>::Error>
+) -> Result<R, S::Error>
 where
-    A: Canon<BridgeStore<Id32>>,
-    R: Canon<BridgeStore<Id32>>,
-    Slf: Canon<BridgeStore<Id32>>,
+    S: Store,
+    A: Canon<S>,
+    R: Canon<S>,
+    Slf: Canon<S>,
 {
-    let bs = BridgeStore::<Id32>::default();
+    let bs = S::default();
     let wrapped = Transaction::from_canon(transaction, &bs)?;
     let (state, result) = transact_raw(&target, &wrapped)?;
 
-    *slf = state.cast(bs)?;
+    *slf = state.cast(bs.clone())?;
 
     result.cast(bs)
 }
