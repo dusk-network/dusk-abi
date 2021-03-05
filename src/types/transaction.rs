@@ -9,7 +9,7 @@ extern crate alloc;
 use crate::canon_to_vec::CanonToVec;
 
 use alloc::vec::Vec;
-use canonical::{Canon, Store};
+use canonical::{ByteSource, Canon, Store};
 use canonical_derive::Canon;
 
 /// A generic transaction
@@ -34,5 +34,15 @@ impl Transaction {
         S: Store,
     {
         Ok(Transaction(c.encode_to_vec(s)?))
+    }
+
+    /// Casts the encoded transaction to given type(s)
+    pub fn cast<C, S>(&self, store: S) -> Result<C, S::Error>
+    where
+        C: Canon<S>,
+        S: Store,
+    {
+        let mut source = ByteSource::new(self.as_bytes(), &store);
+        Canon::<S>::read(&mut source)
     }
 }

@@ -4,7 +4,7 @@
 //
 // Copyright (c) DUSK NETWORK. All rights reserved.
 
-const BUFFER_SIZE_LIMIT: usize = 1024 * 2;
+const BUFFER_SIZE_LIMIT: usize = 1024 * 16;
 
 use canonical::{BridgeStore, ByteSink, ByteSource, Canon, Id32, Store};
 
@@ -99,14 +99,23 @@ where
 }
 
 /// Call another contract at address `target`
-pub fn transact_raw(
+pub fn transact_raw<S, Slf>(
+    slf: &mut Slf,
     target: &ContractId,
     transaction: &Transaction,
-) -> Result<(ContractState, ReturnValue), <BridgeStore<Id32> as Store>::Error> {
-    let bs = BridgeStore::<Id32>::default();
+) -> Result<ReturnValue, S::Error>
+where
+    S: Store,
+    Slf: Canon<S>,
+{
+    let bs = S::default();
 
     let mut buf = [0u8; BUFFER_SIZE_LIMIT];
     let mut sink = ByteSink::new(&mut buf, &bs);
+
+    // Store the state before call `transact`
+    let state = ContractState::from_canon(slf, &bs)?;
+    state.write(&mut sink)?;
 
     transaction.write(&mut sink)?;
 
@@ -115,10 +124,11 @@ pub fn transact_raw(
     // read return back
     let mut source = ByteSource::new(&buf, &bs);
 
-    Ok((
-        ContractState::read(&mut source)?,
-        ReturnValue::read(&mut source)?,
-    ))
+    let state = ContractState::read(&mut source)?;
+
+    *slf = state.cast(bs.clone())?;
+
+    Ok(ReturnValue::read(&mut source)?)
 }
 
 /// Call another contract at address `target`
@@ -138,9 +148,7 @@ where
 {
     let bs = S::default();
     let wrapped = Transaction::from_canon(transaction, &bs)?;
-    let (state, result) = transact_raw(&target, &wrapped)?;
-
-    *slf = state.cast(bs.clone())?;
+    let result = transact_raw(slf, &target, &wrapped)?;
 
     result.cast(bs)
 }
