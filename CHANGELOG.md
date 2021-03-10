@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add `Self` to `transact_raw` to store intermediate state
+- Add `cast` method to `Transaction` type
+
+### Changed
+- Change buffer size from 2 KiB to 16 KiB
 - Replace `BridgeStore<Id32>` with generic `S` in `transact` [#19]
 
 ## [0.6.0] - 2021-03-01
