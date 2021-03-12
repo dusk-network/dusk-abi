@@ -1,6 +1,6 @@
 [package]
 name = "dusk-abi"
-version = "0.6.0"
+version = "0.7.0"
 authors = [
   "Kristoffer Ström <kristoffer@dusk.network>",
   "zer0 <matteo@dusk.network>",
