@@ -9,7 +9,7 @@ extern crate alloc;
 use crate::canon_to_vec::CanonToVec;
 
 use alloc::vec::Vec;
-use canonical::{ByteSource, Canon, Store};
+use canonical::{Canon, CanonError, Source};
 use canonical_derive::Canon;
 
 /// A generic return value
@@ -28,21 +28,19 @@ impl ReturnValue {
     }
 
     /// Creates a transaction from a type implementing `Canon`
-    pub fn from_canon<C, S>(c: &C, s: &S) -> Result<Self, S::Error>
+    pub fn from_canon<C>(c: &C) -> Self
     where
-        C: Canon<S>,
-        S: Store,
+        C: Canon,
     {
-        Ok(ReturnValue(c.encode_to_vec(s)?))
+        ReturnValue(c.encode_to_vec())
     }
 
     /// Casts the encoded return value to given type
-    pub fn cast<C, S>(&self, store: S) -> Result<C, S::Error>
+    pub fn cast<C>(&self) -> Result<C, CanonError>
     where
-        C: Canon<S>,
-        S: Store,
+        C: Canon,
     {
-        let mut source = ByteSource::new(self.as_bytes(), &store);
-        Canon::<S>::read(&mut source)
+        let mut source = Source::new(self.as_bytes());
+        C::decode(&mut source)
     }
 }

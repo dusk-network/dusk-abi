@@ -7,28 +7,24 @@
 extern crate alloc;
 
 use alloc::vec::Vec;
-use canonical::{ByteSink, Canon, Store};
+use canonical::{Canon, Sink};
 
-pub(crate) trait CanonToVec<S>
-where
-    S: Store,
-{
-    fn encode_to_vec(&self, store: &S) -> Result<Vec<u8>, S::Error>;
+pub(crate) trait CanonToVec {
+    fn encode_to_vec(&self) -> Vec<u8>;
 }
 
-impl<T, S> CanonToVec<S> for T
+impl<T> CanonToVec for T
 where
-    T: Canon<S>,
-    S: Store,
+    T: Canon,
 {
-    fn encode_to_vec(&self, store: &S) -> Result<Vec<u8>, S::Error> {
-        let len = Canon::<S>::encoded_len(self);
+    fn encode_to_vec(&self) -> Vec<u8> {
+        let len = self.encoded_len();
 
-        let mut vec = Vec::new();
+        let mut vec = Vec::with_capacity(len);
         vec.resize_with(len, || 0);
-        let mut sink = ByteSink::new(&mut vec[..], store);
+        let mut sink = Sink::new(&mut vec[..]);
 
-        Canon::<S>::write(self, &mut sink)?;
-        Ok(vec)
+        self.encode(&mut sink);
+        vec
     }
 }
