@@ -63,7 +63,7 @@ pub fn gas(value: i32) {
 
 /// Return the ammount of gas consumed until the point when the host call is executed.
 pub fn gas_consumed() -> u64 {
-    unsafe { extertal::gas_consumed() }
+    unsafe { external::gas_consumed() }
 }
 
 /// Call another contract at address `target`
