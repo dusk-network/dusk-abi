@@ -32,6 +32,7 @@ pub mod external {
         pub fn callee(buffer: &mut u8);
 
         pub fn gas(value: i32);
+        pub fn gas_consumed() -> u64;
         pub fn block_height() -> u64;
     }
 }
@@ -58,6 +59,11 @@ pub fn block_height() -> u64 {
 /// Deduct a specified amount of gas from the call
 pub fn gas(value: i32) {
     unsafe { external::gas(value) }
+}
+
+/// Return the ammount of gas consumed until the point when the host call is executed.
+pub fn gas_consumed() -> u64 {
+    unsafe { external::gas_consumed() }
 }
 
 /// Call another contract at address `target`
