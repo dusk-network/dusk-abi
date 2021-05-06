@@ -18,15 +18,11 @@ exclude = [".github/workflows/ci.yml", ".gitignore"]
 cfg-if = "0.1"
 wee_alloc = "0.4"
 
-canonical = { path = "../canonical/canon" }
-canonical_derive = { path = "../canonical/canon_derive" }
+canonical = "0.6"
+canonical_derive = "0.6"
 
 [dev-dependencies]
 arbitrary = "0.3"
 
 [features]
 std = []
-
-[patch.crates-io]
-canonical = { path = "../canonical/canon" }
-canonical_derive = { path = "../canonical/canon_derive" }
