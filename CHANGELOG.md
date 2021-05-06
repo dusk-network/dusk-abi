@@ -7,13 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] 2021-04-07
+
+### Added
+
+- Add `gas_consumed` host function interface [#24].
+
 ## [0.7.0] 2021-03-12
 
 ### Added
+
 - Add `Self` to `transact_raw` to store intermediate state
 - Add `cast` method to `Transaction` type
 
 ### Changed
+
 - Change buffer size from 2 KiB to 16 KiB
 - Replace `BridgeStore<Id32>` with generic `S` in `transact` [#19]
 
