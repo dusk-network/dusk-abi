@@ -7,11 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Update `canonical` from `0.5` to `0.6`
+- Update `canonical_derive` from `0.5` to `0.6`
+- Change from `crate::canon_to_vec::CanonToVec` to `canon::EncodeToVec`
+
+### Removed
+
+- Remove `canon_to_vec` module
+- Remove unused `std` feature
+
 ## [0.8.0] 2021-04-07
 
 ### Added
 
-- Add `gas_consumed` host function interface [#24].
+- Add `gas_consumed` host function interface [#24]
 
 ## [0.7.0] 2021-03-12
 
