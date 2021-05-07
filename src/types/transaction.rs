@@ -33,7 +33,7 @@ impl Transaction {
         Transaction(c.encode_to_vec())
     }
 
-    /// Casts the generict query to given type
+    /// Casts the generic query to given type
     pub fn cast<C>(&self) -> Result<C, CanonError>
     where
         C: Canon,
