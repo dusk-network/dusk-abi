@@ -15,17 +15,17 @@ use canonical_derive::Canon;
 pub struct ReturnValue(Vec<u8>);
 
 impl ReturnValue {
-    /// Returns the byte representation of the transaction
+    /// Returns the byte representation of the return value
     pub fn as_bytes(&self) -> &[u8] {
         &self.0[..]
     }
 
-    /// Creates a transaction from a raw bytes
+    /// Creates a return value from a raw bytes
     pub fn from_slice(buffer: &[u8]) -> Self {
         ReturnValue(buffer.to_vec())
     }
 
-    /// Creates a transaction from a type implementing `Canon`
+    /// Creates a return value from a type implementing `Canon`
     pub fn from_canon<C>(c: &C) -> Self
     where
         C: Canon,
