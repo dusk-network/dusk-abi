@@ -12,6 +12,10 @@
 //!
 //! The official ABI to develop dusk-network contracts and host module for Rusk
 //! VM
+//! 
+//! See [Rusk VM](https://github.com/dusk-network/rusk-vm) for further details,
+//! test cases and usage.
+
 #![warn(missing_docs)]
 #![no_std]
 #![feature(core_intrinsics, lang_items, alloc_error_handler)]
