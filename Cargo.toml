@@ -23,6 +23,3 @@ canonical_derive = "0.6"
 
 [dev-dependencies]
 arbitrary = "0.3"
-
-[features]
-std = []
