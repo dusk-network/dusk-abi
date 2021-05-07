@@ -22,9 +22,6 @@ pub use types::query::Query;
 pub use types::return_value::ReturnValue;
 pub use types::transaction::Transaction;
 
-#[doc(hidden)]
-mod canon_to_vec;
-
 /// The trait that host modules uses to defines their own ID for both host and
 /// hosted environment
 pub trait Module {

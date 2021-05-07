@@ -6,10 +6,8 @@
 
 extern crate alloc;
 
-use crate::canon_to_vec::CanonToVec;
-
 use alloc::vec::Vec;
-use canonical::{Canon, CanonError, Source};
+use canonical::{Canon, CanonError, Source, EncodeToVec};
 use canonical_derive::Canon;
 
 /// Bytes representing a contract state
