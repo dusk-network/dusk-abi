@@ -7,7 +7,7 @@
 extern crate alloc;
 
 use alloc::vec::Vec;
-use canonical::{Canon, CanonError, Source, EncodeToVec};
+use canonical::{Canon, CanonError, EncodeToVec, Source};
 use canonical_derive::Canon;
 
 /// A generic return value
