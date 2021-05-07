@@ -6,10 +6,8 @@
 
 extern crate alloc;
 
-use crate::canon_to_vec::CanonToVec;
-
 use alloc::vec::Vec;
-use canonical::{ByteSource, Canon, Store};
+use canonical::{Canon, CanonError, EncodeToVec, Source};
 use canonical_derive::Canon;
 
 /// A generic return value
@@ -17,32 +15,30 @@ use canonical_derive::Canon;
 pub struct ReturnValue(Vec<u8>);
 
 impl ReturnValue {
-    /// Returns the byte representation of the transaction
+    /// Returns the byte representation of the return value
     pub fn as_bytes(&self) -> &[u8] {
         &self.0[..]
     }
 
-    /// Creates a transaction from a raw bytes
+    /// Creates a return value from a raw bytes
     pub fn from_slice(buffer: &[u8]) -> Self {
         ReturnValue(buffer.to_vec())
     }
 
-    /// Creates a transaction from a type implementing `Canon`
-    pub fn from_canon<C, S>(c: &C, s: &S) -> Result<Self, S::Error>
+    /// Creates a return value from a type implementing `Canon`
+    pub fn from_canon<C>(c: &C) -> Self
     where
-        C: Canon<S>,
-        S: Store,
+        C: Canon,
     {
-        Ok(ReturnValue(c.encode_to_vec(s)?))
+        ReturnValue(c.encode_to_vec())
     }
 
     /// Casts the encoded return value to given type
-    pub fn cast<C, S>(&self, store: S) -> Result<C, S::Error>
+    pub fn cast<C>(&self) -> Result<C, CanonError>
     where
-        C: Canon<S>,
-        S: Store,
+        C: Canon,
     {
-        let mut source = ByteSource::new(self.as_bytes(), &store);
-        Canon::<S>::read(&mut source)
+        let mut source = Source::new(self.as_bytes());
+        C::decode(&mut source)
     }
 }

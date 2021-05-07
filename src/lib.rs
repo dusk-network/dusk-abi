@@ -12,6 +12,10 @@
 //!
 //! The official ABI to develop dusk-network contracts and host module for Rusk
 //! VM
+//!
+//! See [Rusk VM](https://github.com/dusk-network/rusk-vm) for further details,
+//! test cases and usage.
+
 #![warn(missing_docs)]
 #![no_std]
 #![feature(core_intrinsics, lang_items, alloc_error_handler)]
@@ -21,9 +25,6 @@ pub use types::contract::{ContractId, ContractState};
 pub use types::query::Query;
 pub use types::return_value::ReturnValue;
 pub use types::transaction::Transaction;
-
-#[doc(hidden)]
-mod canon_to_vec;
 
 /// The trait that host modules uses to defines their own ID for both host and
 /// hosted environment

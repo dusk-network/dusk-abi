@@ -5,13 +5,10 @@
 // Copyright (c) DUSK NETWORK. All rights reserved.
 
 use crate::{Module, Query, ReturnValue};
-use canonical::Store;
+use canonical::CanonError;
 
 /// The trait that host function modules use to communicate with the VM
-pub trait HostModule<S>: Module
-where
-    S: Store,
-{
+pub trait HostModule: Module {
     /// Execute a query for the current module
-    fn execute(&self, query: Query) -> Result<ReturnValue, S::Error>;
+    fn execute(&self, query: Query) -> Result<ReturnValue, CanonError>;
 }

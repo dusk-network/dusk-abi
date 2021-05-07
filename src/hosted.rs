@@ -6,7 +6,7 @@
 
 const BUFFER_SIZE_LIMIT: usize = 1024 * 16;
 
-use canonical::{BridgeStore, ByteSink, ByteSource, Canon, Id32, Store};
+use canonical::{Canon, CanonError, Sink, Source};
 
 pub use crate::{ContractId, ContractState, Query, ReturnValue, Transaction};
 
@@ -70,93 +70,82 @@ pub fn gas_consumed() -> u64 {
 pub fn query_raw(
     target: &ContractId,
     query: &Query,
-) -> Result<ReturnValue, <BridgeStore<Id32> as Store>::Error> {
-    let bs = BridgeStore::<Id32>::default();
-
+) -> Result<ReturnValue, CanonError> {
     let mut buf = [0u8; BUFFER_SIZE_LIMIT];
-    let mut sink = ByteSink::new(&mut buf, &bs);
+    let mut sink = Sink::new(&mut buf);
 
-    query.write(&mut sink)?;
+    query.encode(&mut sink);
 
     unsafe { external::query(&target.as_bytes()[0], &mut buf[0]) }
 
     // read return back
-    let mut source = ByteSource::new(&buf, &bs);
+    let mut source = Source::new(&buf);
 
-    ReturnValue::read(&mut source)
+    ReturnValue::decode(&mut source)
 }
 
 /// Call another contract at address `target`
 ///
 /// Note that you will have to specify the expected return and argument types
 /// yourself.
-pub fn query<A, R>(
-    target: &ContractId,
-    query: &A,
-) -> Result<R, <BridgeStore<Id32> as Store>::Error>
+pub fn query<A, R>(target: &ContractId, query: &A) -> Result<R, CanonError>
 where
-    A: Canon<BridgeStore<Id32>>,
-    R: Canon<BridgeStore<Id32>>,
+    A: Canon,
+    R: Canon,
 {
-    let bs = BridgeStore::<Id32>::default();
-    let wrapped = Query::from_canon(query, &bs)?;
+    let wrapped = Query::from_canon(query);
     let result = query_raw(target, &wrapped)?;
-    result.cast(bs)
+    result.cast()
 }
 
 /// Call another contract at address `target`
-pub fn transact_raw<S, Slf>(
+pub fn transact_raw<Slf>(
     slf: &mut Slf,
     target: &ContractId,
     transaction: &Transaction,
-) -> Result<ReturnValue, S::Error>
+) -> Result<ReturnValue, CanonError>
 where
-    S: Store,
-    Slf: Canon<S>,
+    Slf: Canon,
 {
-    let bs = S::default();
-
     let mut buf = [0u8; BUFFER_SIZE_LIMIT];
-    let mut sink = ByteSink::new(&mut buf, &bs);
+    let mut sink = Sink::new(&mut buf);
 
     // Store the state before call `transact`
-    let state = ContractState::from_canon(slf, &bs)?;
-    state.write(&mut sink)?;
+    let state = ContractState::from_canon(slf);
 
-    transaction.write(&mut sink)?;
+    state.encode(&mut sink);
+    transaction.encode(&mut sink);
 
     unsafe { external::transact(&target.as_bytes()[0], &mut buf[0]) }
 
     // read return back
-    let mut source = ByteSource::new(&buf, &bs);
+    let mut source = Source::new(&buf);
 
-    let state = ContractState::read(&mut source)?;
+    let state = ContractState::decode(&mut source)?;
 
-    *slf = state.cast(bs.clone())?;
+    *slf = state.cast()?;
 
-    Ok(ReturnValue::read(&mut source)?)
+    ReturnValue::decode(&mut source)
 }
 
 /// Call another contract at address `target`
 ///
 /// Note that you will have to specify the expected return and argument types
 /// yourself.
-pub fn transact<S, A, R, Slf>(
+pub fn transact<A, R, Slf>(
     slf: &mut Slf,
     target: &ContractId,
     transaction: &A,
-) -> Result<R, S::Error>
+) -> Result<R, CanonError>
 where
-    S: Store,
-    A: Canon<S>,
-    R: Canon<S>,
-    Slf: Canon<S>,
+    A: Canon,
+    R: Canon,
+    Slf: Canon,
 {
-    let bs = S::default();
-    let wrapped = Transaction::from_canon(transaction, &bs)?;
+    let wrapped = Transaction::from_canon(transaction);
     let result = transact_raw(slf, &target, &wrapped)?;
 
-    result.cast(bs)
+    result.cast()
 }
 
 #[cfg(test)]

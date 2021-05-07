@@ -6,10 +6,8 @@
 
 extern crate alloc;
 
-use crate::canon_to_vec::CanonToVec;
-
 use alloc::vec::Vec;
-use canonical::{ByteSource, Canon, Store};
+use canonical::{Canon, CanonError, EncodeToVec, Source};
 use canonical_derive::Canon;
 
 /// Bytes representing a contract state
@@ -23,22 +21,20 @@ impl ContractState {
     }
 
     /// Creates a state from a type implementing `Canon`
-    pub fn from_canon<C, S>(c: &C, s: &S) -> Result<Self, S::Error>
+    pub fn from_canon<C>(c: &C) -> Self
     where
-        C: Canon<S>,
-        S: Store,
+        C: Canon,
     {
-        Ok(ContractState(c.encode_to_vec(s)?))
+        ContractState(c.encode_to_vec())
     }
 
     /// Casts the encoded state to given type
-    pub fn cast<C, S>(&self, store: S) -> Result<C, S::Error>
+    pub fn cast<C>(&self) -> Result<C, CanonError>
     where
-        C: Canon<S>,
-        S: Store,
+        C: Canon,
     {
-        let mut source = ByteSource::new(self.as_bytes(), &store);
-        Canon::<S>::read(&mut source)
+        let mut source = Source::new(self.as_bytes());
+        C::decode(&mut source)
     }
 }
 
