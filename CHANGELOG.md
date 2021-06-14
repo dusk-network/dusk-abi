@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `gas_left` host function interface [#31]
+
 ### Changed
 
 - Update `canonical` from `0.5` to `0.6`
@@ -177,6 +181,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Basic transaction framework
 
+[#31]: https://github.com/dusk-network/dusk-abi/issues/31
 [#19]: https://github.com/dusk-network/dusk-abi/issues/19
 [unreleased]: https://github.com/dusk-network/dusk-abi/compare/v0.6.0...HEAD
 [0.6.0]: https://github.com/dusk-network/dusk-abi/compare/v0.6.0...v0.7.0
