@@ -7,15 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] 2021-07-06
+
 ### Added
 
 - Add `gas_left` host function interface [#31]
 
 ### Changed
 
-- Update `canonical` from `0.5` to `0.6`
-- Update `canonical_derive` from `0.5` to `0.6`
-- Change from `crate::canon_to_vec::CanonToVec` to `canon::EncodeToVec`
+- Update `canonical` from `0.5` to `0.6` [#28]
+- Update `canonical_derive` from `0.5` to `0.6` [#28]
+- Change from `crate::canon_to_vec::CanonToVec` to `canon::EncodeToVec` [#28]
 
 ### Removed
 
@@ -182,8 +184,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic transaction framework
 
 [#31]: https://github.com/dusk-network/dusk-abi/issues/31
+[#28]: https://github.com/dusk-network/dusk-abi/issues/28
 [#19]: https://github.com/dusk-network/dusk-abi/issues/19
-[unreleased]: https://github.com/dusk-network/dusk-abi/compare/v0.6.0...HEAD
+[unreleased]: https://github.com/dusk-network/dusk-abi/compare/v0.9.0...HEAD
+[0.6.0]: https://github.com/dusk-network/dusk-abi/compare/v0.8.0...v0.9.0
+[0.6.0]: https://github.com/dusk-network/dusk-abi/compare/v0.7.0...v0.8.0
 [0.6.0]: https://github.com/dusk-network/dusk-abi/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/dusk-network/dusk-abi/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/dusk-network/dusk-abi/compare/v0.5.0...v0.5.1
