@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.9.0] 2021-07-06
+## [0.9.1] - 2021-07-15
+
+### Added
+
+- Add `ContractId::from_raw` const function [#34]
+
+## [0.9.0] - 2021-07-06
 
 ### Added
 
@@ -24,13 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove `canon_to_vec` module
 - Remove unused `std` feature
 
-## [0.8.0] 2021-04-07
+## [0.8.0] - 2021-04-07
 
 ### Added
 
 - Add `gas_consumed` host function interface [#24]
 
-## [0.7.0] 2021-03-12
+## [0.7.0] - 2021-03-12
 
 ### Added
 

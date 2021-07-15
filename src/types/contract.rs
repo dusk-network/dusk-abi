@@ -72,4 +72,9 @@ impl ContractId {
     pub fn as_bytes_mut(&mut self) -> &mut [u8] {
         &mut self.0
     }
+
+    /// Returns a `ContractId` from an array of 32 bytes
+    pub const fn from_raw(b: [u8; 32]) -> Self {
+        Self(b)
+    }
 }
