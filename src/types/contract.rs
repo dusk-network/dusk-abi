@@ -39,9 +39,7 @@ impl ContractState {
 }
 
 /// Type used to identify a contract
-#[derive(
-    Default, Debug, Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Canon,
-)]
+#[derive(Default, Debug, Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Canon)]
 pub struct ContractId([u8; 32]);
 
 impl<B> From<B> for ContractId
@@ -71,5 +69,10 @@ impl ContractId {
     /// Returns the contract id as a mutable slice
     pub fn as_bytes_mut(&mut self) -> &mut [u8] {
         &mut self.0
+    }
+
+    /// Returns a `ContractId` from an array of 32 bytes
+    pub const fn from_raw(b: [u8; 32]) -> Self {
+        Self(b)
     }
 }
