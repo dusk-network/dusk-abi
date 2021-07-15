@@ -39,7 +39,9 @@ impl ContractState {
 }
 
 /// Type used to identify a contract
-#[derive(Default, Debug, Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Canon)]
+#[derive(
+    Default, Debug, Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Canon,
+)]
 pub struct ContractId([u8; 32]);
 
 impl<B> From<B> for ContractId
