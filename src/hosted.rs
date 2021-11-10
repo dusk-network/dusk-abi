@@ -25,8 +25,8 @@ pub mod external {
         #[allow(unused)]
         pub fn debug(buffer: &u8, len: i32);
 
-        pub fn query(target: &u8, buf: &mut u8);
-        pub fn transact(target: &u8, buf: &mut u8);
+        pub fn query(target: &u8, buf: &mut u8, gas_limit: u64);
+        pub fn transact(target: &u8, buf: &mut u8, gas_limit: u64);
 
         pub fn caller(buffer: &mut u8);
         pub fn callee(buffer: &mut u8);
@@ -78,13 +78,14 @@ pub fn gas_left() -> u64 {
 pub fn query_raw(
     target: &ContractId,
     query: &Query,
+    gas_limit: u64,
 ) -> Result<ReturnValue, CanonError> {
     let mut buf = [0u8; BUFFER_SIZE_LIMIT];
     let mut sink = Sink::new(&mut buf);
 
     query.encode(&mut sink);
 
-    unsafe { external::query(&target.as_bytes()[0], &mut buf[0]) }
+    unsafe { external::query(&target.as_bytes()[0], &mut buf[0], gas_limit) }
 
     // read return back
     let mut source = Source::new(&buf);
@@ -96,13 +97,17 @@ pub fn query_raw(
 ///
 /// Note that you will have to specify the expected return and argument types
 /// yourself.
-pub fn query<A, R>(target: &ContractId, query: &A) -> Result<R, CanonError>
+pub fn query<A, R>(
+    target: &ContractId,
+    query: &A,
+    gas_limit: u64,
+) -> Result<R, CanonError>
 where
     A: Canon,
     R: Canon,
 {
     let wrapped = Query::from_canon(query);
-    let result = query_raw(target, &wrapped)?;
+    let result = query_raw(target, &wrapped, gas_limit)?;
     result.cast()
 }
 
@@ -111,6 +116,7 @@ pub fn transact_raw<Slf>(
     slf: &mut Slf,
     target: &ContractId,
     transaction: &Transaction,
+    gas_limit: u64,
 ) -> Result<ReturnValue, CanonError>
 where
     Slf: Canon,
@@ -124,7 +130,7 @@ where
     state.encode(&mut sink);
     transaction.encode(&mut sink);
 
-    unsafe { external::transact(&target.as_bytes()[0], &mut buf[0]) }
+    unsafe { external::transact(&target.as_bytes()[0], &mut buf[0], gas_limit) }
 
     // read return back
     let mut source = Source::new(&buf);
@@ -144,6 +150,7 @@ pub fn transact<A, R, Slf>(
     slf: &mut Slf,
     target: &ContractId,
     transaction: &A,
+    gas_limit: u64,
 ) -> Result<R, CanonError>
 where
     A: Canon,
@@ -151,7 +158,7 @@ where
     Slf: Canon,
 {
     let wrapped = Transaction::from_canon(transaction);
-    let result = transact_raw(slf, &target, &wrapped)?;
+    let result = transact_raw(slf, &target, &wrapped, gas_limit)?;
 
     result.cast()
 }
