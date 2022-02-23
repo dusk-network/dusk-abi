@@ -39,9 +39,7 @@ impl ContractState {
 }
 
 /// Type used to identify a contract
-#[derive(
-    Default, Debug, Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Canon,
-)]
+#[derive(Default, Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Canon)]
 pub struct ContractId([u8; 32]);
 
 impl<B> From<B> for ContractId
@@ -76,5 +74,70 @@ impl ContractId {
     /// Returns a `ContractId` from an array of 32 bytes
     pub const fn from_raw(b: [u8; 32]) -> Self {
         Self(b)
+    }
+}
+
+impl core::fmt::LowerHex for ContractId {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        let bytes = self.as_bytes();
+
+        if f.alternate() {
+            write!(f, "0x")?
+        }
+
+        for byte in bytes {
+            write!(f, "{:02x}", &byte)?
+        }
+
+        Ok(())
+    }
+}
+
+impl core::fmt::UpperHex for ContractId {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        let bytes = self.as_bytes();
+
+        if f.alternate() {
+            write!(f, "0x")?
+        }
+
+        for byte in bytes {
+            write!(f, "{:02X}", &byte)?
+        }
+
+        Ok(())
+    }
+}
+
+impl core::fmt::Display for ContractId {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::LowerHex::fmt(self, f)
+    }
+}
+
+#[allow(non_snake_case)]
+impl core::fmt::Debug for ContractId {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        // Once we format an object using the debug notation (e.g. `{:x?}`)
+        // there is absolutely NO WAY to detect the flag for the lowerhex
+        // or upperhex, and therefore forwarding to the relevant formatter.
+        // Two methods for this purpose exists, but they're not exposed
+        // because they didn't agree on a name yet, see:
+        // <https://github.com/rust-lang/rust/blob/90442458ac46b1d5eed752c316da25450f67285b/library/core/src/fmt/mod.rs#L1817-L1825>
+        //
+        // Therefore the only way is using the deprecated method `flags`,
+        // implementing the same logic of the forementioned methods.
+
+        // We also do not have access to the `FlagV1` enum since it's
+        // private.
+        let FlagV1_DebugUpperHex = 5_u32;
+
+        #[allow(deprecated)]
+        if f.flags() & (1 << FlagV1_DebugUpperHex) != 0 {
+            core::fmt::UpperHex::fmt(self, f)
+        } else {
+            // LowerHex is always the default for debug
+            core::fmt::LowerHex::fmt(self, f)
+        }
     }
 }
