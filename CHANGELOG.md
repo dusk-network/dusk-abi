@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1] - 2022-02-23
+
+### Added
+
+- Add `Display`, `LowerHex` and `UpperHex` traits to `ContractId` [#39]
+
+### Changed
+
+- Change how `Debug` trait is implemented for `ContractId`
+
+## [0.10.0] - 2021-11-10
+
+### Added
+
+- Add parameter for gas limit
+
 ## [0.9.1] - 2021-07-15
 
 ### Added
@@ -189,6 +205,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Basic transaction framework
 
+[#39]: https://github.com/dusk-network/dusk-abi/issues/39
 [#31]: https://github.com/dusk-network/dusk-abi/issues/31
 [#28]: https://github.com/dusk-network/dusk-abi/issues/28
 [#19]: https://github.com/dusk-network/dusk-abi/issues/19
