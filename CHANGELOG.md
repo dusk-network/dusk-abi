@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2022-02-23
+
+- Update `canonical` from `0.6` to `0.7`
+
 ## [0.10.1] - 2022-02-23
 
 ### Added
