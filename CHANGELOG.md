@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1] - 2022-02-23
+
+### Added
+
+- Add `Display`, `LowerHex` and `UpperHex` traits to `ContractId`
+
+### Changed
+
+- Change how `Debug` trait is implemented for `ContractId`
+
+## [0.10.0] - 2021-11-10
+
+### Added
+
+- Add parameter for gas limit
+
 ## [0.9.1] - 2021-07-15
 
 ### Added
