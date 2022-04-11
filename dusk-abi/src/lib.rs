@@ -21,6 +21,7 @@
 #![feature(core_intrinsics, lang_items, alloc_error_handler)]
 
 mod types;
+
 pub use types::contract::{ContractId, ContractState};
 pub use types::query::Query;
 pub use types::return_value::ReturnValue;

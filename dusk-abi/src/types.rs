@@ -4,7 +4,4 @@
 //
 // Copyright (c) DUSK NETWORK. All rights reserved.
 
-pub mod contract;
-pub mod query;
-pub mod return_value;
-pub mod transaction;
+pub use dusk_abi_types::*;

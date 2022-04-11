@@ -1,0 +1,12 @@
+[package]
+name = "dusk-abi-types"
+version = "0.1.0"
+edition = "2021"
+
+repository = "https://github.com/dusk-network/dusk-abi"
+description = "The types used in the official ABI to develop dusk-network contracts and host module for Rusk VM"
+license = "MPL-2.0"
+
+[dependencies]
+canonical = "0.7"
+canonical_derive = "0.7"

@@ -1,25 +1,5 @@
-[package]
-name = "dusk-abi"
-version = "0.11.0"
-authors = [
-  "Kristoffer Ström <kristoffer@dusk.network>",
-  "zer0 <matteo@dusk.network>",
-  "Jules de Smit <jules@dusk.network>",
-  "CPerezz <carlos@dusk.network>"
+[workspace]
+members = [
+    "dusk-abi-types",
+    "dusk-abi",
 ]
-edition = "2018"
-
-repository = "https://github.com/dusk-network/dusk-abi"
-description = "The official ABI to develop dusk-network contracts and host module for Rusk VM"
-license = "MPL-2.0"
-exclude = [".github/workflows/ci.yml", ".gitignore"]
-
-[dependencies]
-cfg-if = "0.1"
-wee_alloc = "0.4"
-
-canonical = "0.7"
-canonical_derive = "0.7"
-
-[dev-dependencies]
-arbitrary = "0.3"
